@@ -25,6 +25,7 @@ class App extends React.Component {
     state = initialState;
 
     _searchIdUrl = `https://front-test.beta.aviasales.ru/search`;
+
     _searchTickets = `https://front-test.beta.aviasales.ru/tickets?searchId`;
 
     componentDidMount() {
@@ -36,6 +37,7 @@ class App extends React.Component {
         const response = await axios.get(this._searchIdUrl);
         await this.setState(() => ({searchId: response.data.searchId}));
     }
+
     getTickets = async () => {
         try {
             const {searchId} = this.state;
@@ -51,10 +53,11 @@ class App extends React.Component {
 
         }
     }
+
     handleCheck = (e) => {
         const {checked, value} = e.target;
         if (checked) {
-            this.setState(({filters, checked}) => ({
+            this.setState(({filters}) => ({
                 filters: [...filters, value],
                 checked: {...checked, [value]: true}
             }));
@@ -62,7 +65,7 @@ class App extends React.Component {
         if (!checked) {
             const {filters} = this.state;
             const newFilters = filters.filter(el => el !== value);
-            this.setState((checked) => ({filters: newFilters, checked: {...checked, [value]: false}}));
+            this.setState(() => ({filters: newFilters, checked: {...checked, [value]: false}}));
         }
     }
 
@@ -75,6 +78,7 @@ class App extends React.Component {
             checkSortByTime: false
         }));
     }
+
     sortByTime = () => {
         const {tickets} = this.state;
         const sortedArr = tickets.sort((a, b) => (a.segments[0].duration + a.segments[1].duration) >
@@ -87,22 +91,24 @@ class App extends React.Component {
     }
 
     render() {
-        const {tickets,
+        const {
+            tickets,
             filters,
             checked,
-        checkSortByTime,
-        checkSortByPrice} = this.state;
+            checkSortByTime,
+            checkSortByPrice
+        } = this.state;
         return (
             <MainContainer>
                 <StopsControl onChange={this.handleCheck}
                               checked={checked}/>
                 <RightSideWrapper>
                     <StyledMainLogo
-                    src={mainLogo}/>
+                        src={mainLogo}/>
                     <SortButtons sortByPrice={this.sortByPrice}
                                  sortByTime={this.sortByTime}
-                    checkByPrice={checkSortByPrice}
-                    checkByTime={checkSortByTime}/>
+                                 checkByPrice={checkSortByPrice}
+                                 checkByTime={checkSortByTime}/>
                     <Tickets tickets={tickets}
                              filters={filters}
                     />
