@@ -4,13 +4,13 @@ import Tickets from "./components/Tickets/tickets";
 import StopsControl from "./components/StopsControl/stopsControl";
 import {MainContainer, RightSideWrapper, StyledMainLogo} from "./styledApp";
 import SortButtons from "./components/SortButtons/sortButtons";
-import mainLogo from '../src/images/mainLogo.svg';
+import mainLogo from './images/mainLogo.svg';
 
 const initialState = {
     tickets: [],
     searchId: '',
     filters: [],
-    checked: {
+    checkedValues: {
         '4': false,
         '0': false,
         '1': false,
@@ -56,16 +56,20 @@ class App extends React.Component {
 
     handleCheck = (e) => {
         const {checked, value} = e.target;
+        const {checkedValues} = this.state;
         if (checked) {
             this.setState(({filters}) => ({
                 filters: [...filters, value],
-                checked: {...checked, [value]: true}
+                checkedValues: {...checkedValues, [value]: true}
             }));
         }
         if (!checked) {
             const {filters} = this.state;
             const newFilters = filters.filter(el => el !== value);
-            this.setState(() => ({filters: newFilters, checked: {...checked, [value]: false}}));
+            this.setState(() => ({
+                filters: newFilters,
+                checkedValues: {...checkedValues, [value]: false}
+            }));
         }
     }
 
@@ -94,14 +98,14 @@ class App extends React.Component {
         const {
             tickets,
             filters,
-            checked,
+            checkedValues,
             checkSortByTime,
             checkSortByPrice
         } = this.state;
         return (
             <MainContainer>
                 <StopsControl onChange={this.handleCheck}
-                              checked={checked}/>
+                              checked={checkedValues}/>
                 <RightSideWrapper>
                     <StyledMainLogo
                         src={mainLogo}/>
