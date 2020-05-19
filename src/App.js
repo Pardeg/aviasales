@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Tickets from "./components/Tickets/tickets";
 import StopsControl from "./components/StopsControl/stopsControl";
+import './App.scss';
 import {MainContainer, RightSideWrapper, StyledMainLogo} from "./styledApp";
 import SortButtons from "./components/SortButtons/sortButtons";
 import mainLogo from './images/mainLogo.svg';
@@ -11,11 +12,11 @@ const initialState = {
     searchId: '',
     filters: [],
     checkedValues: {
-        '4': false,
-        '0': false,
-        '1': false,
-        '2': false,
-        '3': false
+        'allStops': false,
+        'withoutStops': false,
+        'oneStop': false,
+        'twoStops': false,
+        'threeStops': false
     },
     checkSortByPrice: false,
     checkSortByTime: false
@@ -55,21 +56,50 @@ class App extends React.Component {
     }
 
     handleCheck = (e) => {
-        const {checked, value} = e.target;
+        const {checked, value, name} = e.target;
         const {checkedValues} = this.state;
         if (checked) {
-            this.setState(({filters}) => ({
-                filters: [...filters, value],
-                checkedValues: {...checkedValues, [value]: true}
-            }));
+            if (value === 'allStops') {
+                console.log(checkedValues)
+                this.setState(({filters}) => ({
+                    filters: [...filters, value],
+                    checkedValues: {
+                        [name]: true,
+                        'withoutStops': true,
+                        'oneStop': true,
+                        'twoStops': true,
+                        'threeStops': true
+                    }
+                }));
+            } else {
+                this.setState(({filters}) => ({
+                    filters: [...filters, value],
+                    checkedValues: {...checkedValues, [name]: true}
+                }));
+            }
         }
         if (!checked) {
-            const {filters} = this.state;
-            const newFilters = filters.filter(el => el !== value);
-            this.setState(() => ({
-                filters: newFilters,
-                checkedValues: {...checkedValues, [value]: false}
-            }));
+            if (value === 'allStops') {
+                const {filters} = this.state;
+                const newFilters = filters.filter(el => el !== value);
+                this.setState(() => ({
+                    filters: newFilters,
+                    checkedValues: {
+                        'allStops': false,
+                        'withoutStops': false,
+                        'oneStop': false,
+                        'twoStops': false,
+                        'threeStops': false
+                    }
+                }));
+            }else{
+                const {filters} = this.state;
+                const newFilters = filters.filter(el => el !== value);
+                this.setState(() => ({
+                    filters: newFilters,
+                    checkedValues: {...checkedValues, [name]: false}
+                }));
+            }
         }
     }
 

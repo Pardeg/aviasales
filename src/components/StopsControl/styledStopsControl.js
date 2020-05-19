@@ -2,6 +2,7 @@ import styled from "styled-components";
 import checked from '../../images/Checkbox.svg';
 import notChecked from '../../images/Form.svg';
 
+
 export const StopsControlContainer = styled.div`
 display: flex;
 Width:232px;
@@ -22,17 +23,20 @@ display: none;
 `
 export const StopsHeader = styled.p`
 font-size: 12px;
-height: 13px;
+height: 12px;
 font-weight: 600;
+font-family: 'Open Sans';
+font-style: normal;
 `
 export const StyledLabel = styled.label`
 display: flex;
 align-items: center;
 margin-bottom: 20px;
 font-size: 13px;
-font-weight: 600;
 cursor: pointer;
 vertical-align: center;
+font-family: 'Open Sans';
+font-style: normal;
 &:before {
 content: "";
 display:inline-block;

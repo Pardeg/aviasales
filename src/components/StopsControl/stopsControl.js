@@ -1,60 +1,46 @@
 import React from "react";
-import {StopsControlContainer, StopsHeader, StyledInput, StyledLabel} from "./styledStopsControl";
 import PropTypes from 'prop-types';
+import {StopsControlContainer, StopsHeader, StyledInput, StyledLabel} from "./styledStopsControl";
 
 const StopsControl = (props) => {
     const {onChange, checked} = props;
+    const stopsControlData = [
+        {checkedValue: checked.allStops, name: 'allStops', value: 'allStops', text: 'Все'},
+        {checkedValue: checked.withoutStops, name: 'withoutStops', value: '0', text: 'Без пересадок'},
+        {checkedValue: checked.oneStop, name: 'oneStop', value: '1', text: '1 пересадка'},
+        {checkedValue: checked.twoStops, name: 'twoStops', value: '2', text: '2 пересадки'},
+        {checkedValue: checked.threeStops, name: 'threeStops', value: '3', text: '3 пересадки'},
+    ];
+    const stopsControlRender = (data) => {
+        return data.map((el, n) => {
+            const {checkedValue, name, value, text} = el;
+            return (
+                <StyledLabel checked={checkedValue}
+                             key={n}
+                >
+                    <StyledInput type="checkbox"
+                                 name={name}
+                                 value={value}
+                                 onChange={onChange}
+                   />
+                    {text}
+                </StyledLabel>
+            );
+        });
+    }
     return (
         <StopsControlContainer>
             <StopsHeader>
                 КОЛИЧЕСТВО ПЕРЕСАДОК
             </StopsHeader>
-            <StyledLabel checked={checked[4]}>
-                <StyledInput type="checkbox"
-                             name="allTickets"
-                             value={4}
-                             onChange={onChange}/>
-                Все
-            </StyledLabel>
-            <StyledLabel checked={checked[0]}>
-                <StyledInput type="checkbox"
-                             name="withoutStops"
-                             value={0}
-                             onChange={onChange}/>
-                Без пересадок
-            </StyledLabel>
-            <StyledLabel checked={checked[1]}>
-                <StyledInput type="checkbox"
-                             name="oneStop"
-                             value={1}
-                             onChange={onChange}/>
-                1 пересадка
-            </StyledLabel>
-            <StyledLabel checked={checked[2]}>
-                <StyledInput type="checkbox"
-                             name="twoStops"
-                             value={2}
-                             onChange={onChange}/>
-                2 пересадки
-            </StyledLabel>
-            <StyledLabel checked={checked[3]}>
-                <StyledInput type="checkbox"
-                             name="threeStops"
-                             value={3}
-                             onChange={onChange}/>
-                3 пересадки
-            </StyledLabel>
+            {stopsControlRender(stopsControlData)}
         </StopsControlContainer>
     );
 }
 export default StopsControl;
 
 StopsControl.propTypes = {
-    onChange: PropTypes.func,
-    checked: PropTypes.bool
+    onChange: PropTypes.func.isRequired,
+    checked: PropTypes.object.isRequired
 }
 
-StopsControl.defaultProps = {
-    onChange: null,
-    checked: false
-}

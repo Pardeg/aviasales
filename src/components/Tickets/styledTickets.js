@@ -5,6 +5,7 @@ display: flex:
 flex-direction: column;
 `
 export const Ticket = styled.div`
+font-family: 'Open Sans';
 display: flex;
 flex-direction: row;
 justify-content: space-between;
@@ -31,6 +32,7 @@ display: flex;
 justify-content: flex-start;
 font-size: 12px;
 color: #A0B0B9;
+margin-bottom: 3px;
 `
 export const BlackText = styled.span`
 font-size: 14px;
@@ -50,6 +52,7 @@ justify-content: flex-start;
 font-size: 12px;
 color: #A0B0B9;
 margin-top: 75px;
+margin-bottom: 3px;
 `
 export const Img = styled.img`
 margin-top:20px;
