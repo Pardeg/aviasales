@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import styled from "styled-components";
 
 const SortButtons = (props) => {
-    const {sortByPrice, sortByTime, checkByPrice, checkByTime} = props;
+    const {onClick, checkByPrice, checkByTime} = props;
     return (
         <SortButtonsContainer>
             <StyledButtonLeft
-                onClick={sortByPrice}
+                name="priceSort"
+                onClick={onClick}
                 checked={checkByPrice}>
                 САМЫЙ ДЕШЕВЫЙ
             </StyledButtonLeft>
             <StyledButtonRight
-                onClick={sortByTime}
+                name="timeSort"
+                onClick={onClick}
                 checked={checkByTime}>
                 САМЫЙ БЫСТРЫЙ
             </StyledButtonRight>
@@ -23,8 +25,7 @@ const SortButtons = (props) => {
 export default SortButtons;
 
 SortButtons.propTypes = {
-    sortByPrice: PropTypes.func.isRequired,
-    sortByTime: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
     checkByTime: PropTypes.bool.isRequired,
     checkByPrice: PropTypes.bool.isRequired
 };

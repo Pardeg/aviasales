@@ -92,7 +92,7 @@ class App extends React.Component {
                         'threeStops': false
                     }
                 }));
-            }else{
+            } else {
                 const {filters} = this.state;
                 const newFilters = filters.filter(el => el !== value);
                 this.setState(() => ({
@@ -103,26 +103,31 @@ class App extends React.Component {
         }
     }
 
-    sortByPrice = () => {
+    toggleSortButtons = (e) => {
+        const {name} = e.target;
         const {tickets} = this.state;
-        const sortedArr = tickets.sort((a, b) => a.price > b.price ? 1 : -1);
-        this.setState(() => ({
-            tickets: sortedArr,
-            checkSortByPrice: true,
-            checkSortByTime: false
-        }));
+        if (name === 'priceSort') {
+            const sortedArr = tickets.sort((a, b) => a.price > b.price ? 1 : -1);
+            this.setState(() => ({
+                tickets: sortedArr,
+                checkSortByPrice: true,
+                checkSortByTime: false
+            }));
+        }
+        if (name === 'timeSort') {
+            const sortedArr = tickets.sort((a, b) => {
+                const {segments: [{duration: startA}, {duration: endA}]} = a;
+                const {segments: [{duration: startB}, {duration: endB}]} = b;
+                return ((startA + endA) > (startB + endB) ? 1 : -1);
+            });
+            this.setState(() => ({
+                tickets: sortedArr,
+                checkSortByPrice: false,
+                checkSortByTime: true
+            }));
+        }
     }
 
-    sortByTime = () => {
-        const {tickets} = this.state;
-        const sortedArr = tickets.sort((a, b) => (a.segments[0].duration + a.segments[1].duration) >
-        (b.segments[0].duration + b.segments[1].duration) ? 1 : -1);
-        this.setState(() => ({
-            tickets: sortedArr,
-            checkSortByPrice: false,
-            checkSortByTime: true
-        }));
-    }
 
     render() {
         const {
@@ -139,8 +144,7 @@ class App extends React.Component {
                 <RightSideWrapper>
                     <StyledMainLogo
                         src={mainLogo}/>
-                    <SortButtons sortByPrice={this.sortByPrice}
-                                 sortByTime={this.sortByTime}
+                    <SortButtons onClick={this.toggleSortButtons}
                                  checkByPrice={checkSortByPrice}
                                  checkByTime={checkSortByTime}/>
                     <Tickets tickets={tickets}
