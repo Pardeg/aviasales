@@ -4,9 +4,9 @@ import {differenceInMinutes, getHours, getMinutes} from 'date-fns';
 
 class AviasalesHelper {
     stopsCounter = (stops) => {
-        if (stops.length === 0) return 'БЕЗ ПЕРЕСАДОК';
-        if (stops.length === 1) return `1 ПЕРЕСАДКА`;
-        return `${stops.length} ПЕРЕСАДКИ`;
+        if (stops.length === 0) return 'без пересадок';
+        if (stops.length === 1) return `1 пересадка`;
+        return `${stops.length} пересадки`;
     }
 
     stopsName = (stops) => {

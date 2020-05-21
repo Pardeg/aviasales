@@ -6,23 +6,44 @@ class AviasalesApi {
 
     _searchTickets = `https://front-test.beta.aviasales.ru/tickets?searchId`;
 
-    getTickets= async() =>{
-      const response = await axios.get(this._searchIdUrl);
-      const searchId =  response.data.searchId;
-     let tickets= [];
 
-    }
-    const getTicketsData =async ()=>{
+    getTickets = async (id) => {
         try {
-            const res = await axios.get(`${this._searchTickets}=${searchId}`);
+            const response = await axios.get(`${this._searchTickets}=${id}`);
             if (response.data.stop === false) {
-                getTicketsData();
+                this.getTickets(id)
             }
-            return res.data.tickets;
-        }catch(e){
-            getTicketsData();
+        } catch (e) {
+            this.getTickets(id);
+        }
+    }
+
+    getSearchId = async () => {
+        const response = await axios.get(this._searchIdUrl);
+        return response.data.searchId;
+    }
+
+    loadTickets = async (cb) => {
+        const id = await this.getSearchId();
+        let response = null;
+        /* eslint-disable no-await-in-loop */
+        do {
+            response = await this.getChunk(id);
+            cb(response.data.tickets);
+        } while (response.data.stop === false)
+        /* eslint-disable no-await-in-loop */
+        console.log(` all chunks are loaded`);
+    }
+
+    getChunk = async (id) => {
+        try {
+            return await axios.get(`${this._searchTickets}=${id}`);
+        } catch (e) {
+            const res = await this.getChunk(id);
+            return res;
         }
     }
 }
 
-export const aviasalesApi = new AviasalesApi();
+const aviasalesApi = new AviasalesApi();
+export default aviasalesApi;

@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import aviasalesApi from "./services/aviasalesApi";
 import Tickets from "./components/Tickets/tickets";
 import StopsControl from "./components/StopsControl/stopsControl";
 import './App.scss';
@@ -25,34 +25,11 @@ const initialState = {
 class App extends React.Component {
     state = initialState;
 
-    _searchIdUrl = `https://front-test.beta.aviasales.ru/search`;
-
-    _searchTickets = `https://front-test.beta.aviasales.ru/tickets?searchId`;
-
     componentDidMount() {
-        this.getSearchId();
-        setTimeout(this.getTickets, 1000);
-    }
+        aviasalesApi.loadTickets((chunk) => {
+            this.setState(({tickets}) => ({tickets: [...tickets, ...chunk]}));
+        })
 
-    getSearchId = async () => {
-        const response = await axios.get(this._searchIdUrl);
-        await this.setState(() => ({searchId: response.data.searchId}));
-    }
-
-    getTickets = async () => {
-        try {
-            const {searchId} = this.state;
-            console.log(searchId);
-            const response = await axios.get(`${this._searchTickets}=${searchId}`);
-            await this.setState(({tickets}) => ({tickets: [...tickets, ...response.data.tickets]}));
-            if (response.data.stop === false) {
-                this.getTickets();
-            }
-        } catch (e) {
-            console.log(e);
-            this.getTickets();
-
-        }
     }
 
     handleCheck = (e) => {

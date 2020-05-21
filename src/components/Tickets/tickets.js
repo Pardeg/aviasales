@@ -62,7 +62,7 @@ const Tickets = (props) => {
                             <BlackText>{helper.flightTimeEditor(dateEnd, durationEnd)}</BlackText>
                         </FirstTicketColumn>
                         <SecondColumn>
-                            <ColumnTwoHeader>В ПУТИ</ColumnTwoHeader>
+                            <ColumnTwoHeader>в пути</ColumnTwoHeader>
                             <BlackText>{helper.flightTimeCounter(dateStart, durationStart)}</BlackText>
                             <GreyText>В ПУТИ</GreyText>
                             <BlackText>{helper.flightTimeCounter(dateEnd, durationEnd)}</BlackText>
